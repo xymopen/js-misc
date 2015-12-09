@@ -98,5 +98,5 @@ function addPrefix( n, prefixes ) {
 		}
 	}
 
-	return n.toString();
+	return toTrimmedFixed( n, FIXED );
 };
