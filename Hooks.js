@@ -171,7 +171,7 @@ var Hooks = ( function() {
 						Object.defineProperty( target, methodName, {
 							"configurable": true,
 							"enumerable": true,
-							"value": "function" === typeof method ? hookMethod( method, onApply ) : newValue,
+							"value": "function" === typeof newValue ? hookMethod( newValue, onApply ) : newValue,
 							"writable": true,
 						} );
 					} );
