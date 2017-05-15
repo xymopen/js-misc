@@ -1,3 +1,15 @@
+// ==UserScript==
+// @name			docsReady
+// @namespace		xuyiming.open@outlook.com
+// @description		A JavaScript to run script when docs is ready
+// @author			xymopen
+// @version			1.0.0
+// @grant			none
+// @license			BSD 2-Clause
+// @homepageURL		https://github.com/xymopen/JS_Utilities/blob/master/docsReady.js
+// @updateURL		https://raw.githubusercontent.com/xymopen/JS_Utilities/master/docsReady.js
+// ==/UserScript==
+
 function domReady( onReady, contextWindow ) {
 	var excuted = false;
 
