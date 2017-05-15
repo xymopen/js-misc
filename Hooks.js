@@ -3,11 +3,11 @@
 // @namespace		xuyiming.open@outlook.com
 // @description		A JavaScript hook/reply ultility
 // @author			xymopen
-// @version			1.1.2
+// @version			1.1.3
 // @grant			none
 // @license			BSD 2-Clause
-// @homepageURL		https://github.com/xymopen/JS_Utilities/blob/master/Hooks.js
-// @updateURL		https://raw.githubusercontent.com/xymopen/JS_Utilities/master/Hooks.js
+// @homepageURL		https://github.com/xymopen/JS_Misc/blob/master/Hooks.js
+// @updateURL		https://raw.githubusercontent.com/xymopen/JS_Misc/master/Hooks.js
 // ==/UserScript==
 
 // TODO: JsDoc
