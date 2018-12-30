@@ -1,5 +1,7 @@
+"use strict";
+
 /*
-https://secure.php.net/manual/cn/function.mb-strwidth.php
+https://secure.php.net/manual/en/function.mb-strwidth.php
 		Characters width
 		Chars			Width
 	U+0000 - U+0019		0
@@ -9,91 +11,60 @@ https://secure.php.net/manual/cn/function.mb-strwidth.php
 	U+FFA0 -       		2
 */
 
-function getCharWidth( character ) {
-	"use strict";
-	
-	var code = character.charCodeAt( 0 );
-	
+export const charWid = character => {
+	const code = character.charCodeAt( 0 );
+
 	return ( code < 0x0020 ) ? 0 :
 		( code < 0x2000 ) ? 1 :
 		( code < 0xFF61 ) ? 2 :
 		( code < 0xFFA0 ) ? 1 : 2;
 };
 
-function getStringWidth( str ) {
-	"use strict";
-	
-	return str.split( "" ).map( getCharWidth ).reduce( function( a, b ) {
-		return a + b;
-	} );
-}
+export const strWid = str => {
+	let sum = 0;
 
-var Complete = {
-	"left": function left( str, width, fillChar ) {
-		"use strict";
-		
-		var i, strWidth = getStringWidth( str );
-		
-		if ( strWidth > width ) {
-			throw new Error( "ERR_STRING_TOO_WIDE_TO_COMPLETE" );
-		} else {
-			if ( !fillChar ) {
-				fillChar = "\x20";
-			}
-			
-			for ( i = strWidth; i < width; i += 1 ) {
-				str += fillChar;
-			}
-			
-			return str;
-		}
-	},
-	
-	"center": function center( str, width, fillChar ) {
-		"use strict";
-		
-		var i, prefixFilling, suffixFilling,
-			strWidth = getStringWidth( str );
-		
-		if ( strWidth > width ) {
-			throw new Error( "ERR_STRING_TOO_WIDE_TO_COMPLETE" );
-		} else {
-			if ( !fillChar ) {
-				fillChar = "\x20";
-			}
-			
-			prefixFilling = Math.floor( ( width - strWidth ) / 2 );
-			suffixFilling = width - strWidth - prefixFilling;
-			
-			for ( i = 0; i < prefixFilling; i += 1 ) {
-				str += fillChar;
-			}
-			
-			for ( i = 0; i < suffixFilling; i += 1 ) {
-				str = fillChar + str;
-			}
-			
-			return str;
-		}
-	},
-	
-	"right": function right( str, width, fillChar ) {
-		"use strict";
-		
-		var i, strWidth = getStringWidth( str );
-		
-		if ( strWidth > width ) {
-			throw new Error( "ERR_STRING_TOO_WIDE_TO_COMPLETE" );
-		} else {
-			if ( !fillChar ) {
-				fillChar = "\x20";
-			}
-			
-			for ( i = strWidth; i < width; i += 1 ) {
-				str = fillChar + str;
-			}
-			
-			return str;
-		}
+	for ( let i = 0; i < str.length; i += 1 ) {
+		sum += charWid( str.charAt( i ) );
+	}
+
+	return sum;
+};
+
+export const left = ( str, maxWidth, fillChar = "\x20" ) => {
+	const strWidth = strWid( str );
+
+	if ( fillChar.length !== 1 ) {
+		throw new TypeError( `Expected fill character to be one character but received ${ fillChar }` );
+	} else if ( strWidth > maxWidth ) {
+		throw new Error( "String is too long to fit" );
+	} else {
+		return `${ str }${ fillChar.repeat( strWidth - maxWidth ) }`;
+	}
+};
+
+export const right = ( str, maxWidth, fillChar = "\x20" ) => {
+	const strWidth = strWid( str );
+
+	if ( fillChar.length !== 1 ) {
+		throw new TypeError( `Expected fill character to be one character but received ${ fillChar }` );
+	} else if ( strWidth > maxWidth ) {
+		throw new Error( "String is too long to fit" );
+	} else {
+		return `${ fillChar.repeat( strWidth - maxWidth ) }${ str }`;
+	}
+};
+
+export const center = ( str, maxWidth, fillChar = "\x20" ) => {
+	const strWidth = strWid( str );
+
+	if ( fillChar.length !== 1 ) {
+		throw new TypeError( `Expected fill character to be one character but received ${ fillChar }` );
+	} else if ( strWidth > maxWidth ) {
+		throw new Error( "String is too long to fit" );
+	} else {
+		const startPadding = Math.floor( ( maxWidth - strWidth ) / 2 ),
+			endPadding = maxWidth - strWidth - startPadding;
+
+		return `${ fillChar.repeat( startPadding ) }${ str }${ fillChar.repeat( endPadding ) }`;
 	}
 };
