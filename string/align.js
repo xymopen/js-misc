@@ -35,10 +35,10 @@ export const left = ( str, maxWidth, fillChar = "\x20" ) => {
 
 	if ( fillChar.length !== 1 ) {
 		throw new TypeError( `Expected fill character to be one character but received ${ fillChar }` );
-	} else if ( strWidth > maxWidth ) {
-		throw new Error( "String is too long to fit" );
-	} else {
+	} else if ( strWidth < maxWidth ) {
 		return `${ str }${ fillChar.repeat( strWidth - maxWidth ) }`;
+	} else {
+		return str;
 	}
 };
 
@@ -47,10 +47,10 @@ export const right = ( str, maxWidth, fillChar = "\x20" ) => {
 
 	if ( fillChar.length !== 1 ) {
 		throw new TypeError( `Expected fill character to be one character but received ${ fillChar }` );
-	} else if ( strWidth > maxWidth ) {
-		throw new Error( "String is too long to fit" );
-	} else {
+	} else if ( strWidth < maxWidth ) {
 		return `${ fillChar.repeat( strWidth - maxWidth ) }${ str }`;
+	} else {
+		return str;
 	}
 };
 
@@ -59,12 +59,12 @@ export const center = ( str, maxWidth, fillChar = "\x20" ) => {
 
 	if ( fillChar.length !== 1 ) {
 		throw new TypeError( `Expected fill character to be one character but received ${ fillChar }` );
-	} else if ( strWidth > maxWidth ) {
-		throw new Error( "String is too long to fit" );
-	} else {
+	} else if ( strWidth < maxWidth ) {
 		const startPadding = Math.floor( ( maxWidth - strWidth ) / 2 ),
 			endPadding = maxWidth - strWidth - startPadding;
 
 		return `${ fillChar.repeat( startPadding ) }${ str }${ fillChar.repeat( endPadding ) }`;
+	} else {
+		return str;
 	}
 };
