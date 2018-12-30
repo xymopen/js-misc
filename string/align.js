@@ -11,6 +11,11 @@ https://secure.php.net/manual/en/function.mb-strwidth.php
 	U+FFA0 -       		2
 */
 
+/**
+ * return the width of a character if uses monospaced font
+ * @param {string} character
+ * @returns {0 | 1 | 2}
+ */
 export const charWid = character => {
 	const code = character.charCodeAt( 0 );
 
@@ -20,6 +25,11 @@ export const charWid = character => {
 		( code < 0xFFA0 ) ? 1 : 2;
 };
 
+/**
+ * return the width of a string if uses monospaced font
+ * @param {string} str
+ * @returns {number}
+ */
 export const strWid = str => {
 	let sum = 0;
 
@@ -30,6 +40,12 @@ export const strWid = str => {
 	return sum;
 };
 
+/**
+ * pad str to left aligned
+ * @param {string} str
+ * @param {number} maxWidth
+ * @param {string} fillChar - one character
+ */
 export const left = ( str, maxWidth, fillChar = "\x20" ) => {
 	const strWidth = strWid( str );
 
@@ -42,6 +58,12 @@ export const left = ( str, maxWidth, fillChar = "\x20" ) => {
 	}
 };
 
+/**
+ * pad str to right aligned
+ * @param {string} str
+ * @param {number} maxWidth
+ * @param {string} fillChar - one character
+ */
 export const right = ( str, maxWidth, fillChar = "\x20" ) => {
 	const strWidth = strWid( str );
 
@@ -54,6 +76,12 @@ export const right = ( str, maxWidth, fillChar = "\x20" ) => {
 	}
 };
 
+/**
+ * pad str to center aligned
+ * @param {string} str
+ * @param {number} maxWidth
+ * @param {string} fillChar - one character
+ */
 export const center = ( str, maxWidth, fillChar = "\x20" ) => {
 	const strWidth = strWid( str );
 
