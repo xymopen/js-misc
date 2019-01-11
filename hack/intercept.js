@@ -5,9 +5,13 @@
  * @param {onApply} onApply
  */
 export const intercept = ( target, onApply ) => {
-	return function ( ...args ) {
+	const fn = function ( ...args ) {
 		return onApply( target, this, args );
-	}
+	};
+
+	fn.prototype = target.prototype;
+
+	return fn;
 }
 
 /**
