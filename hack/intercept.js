@@ -26,7 +26,7 @@ export const invoke = ( target, thisArg, args ) => {
 /**
  * @callback onApply
  * @param {Function} target - The function should have invoked
- * @param {any} thisArg - The object used as `this` to the target
+ * @param {object | undefined} thisArg - The object used as `this` to the target
  * @param {any[]} args - A list of arguments passed to the target.
  * @returns {any}
  */
