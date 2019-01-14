@@ -15,7 +15,6 @@ export const ready = target =>
 		target.addEventListener( "error", rejectHandler );
 	} );
 
-
 /**
  * @template E
  * @typedef TypedEventTarget

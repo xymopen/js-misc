@@ -12,4 +12,4 @@ export const download = ( url, filename = new URL( url ).pathname.split( "/" ).p
 	a.target = "_blank";
 
 	a.click();
-}
+};

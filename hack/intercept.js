@@ -12,7 +12,7 @@ export const intercept = ( target, onApply ) => {
 	fn.prototype = target.prototype;
 
 	return fn;
-}
+};
 
 /**
  * call `target` function as it should have
@@ -21,7 +21,7 @@ export const intercept = ( target, onApply ) => {
  */
 export const invoke = ( target, thisArg, args ) => {
 	return target.apply( thisArg, args )
-}
+};
 
 /**
  * @callback onApply
