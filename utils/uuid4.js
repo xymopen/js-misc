@@ -1,4 +1,5 @@
-/// <reference lib="es2017" />
+/// <reference lib="es2015.iterable" />
+/// <reference lib="es2017.string" />
 
 export const UUID4 = () => {
 	/**
