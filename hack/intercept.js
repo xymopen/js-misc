@@ -1,8 +1,10 @@
 /**
- * returns a function which can trap `target` function calls
- *
- * @param {Function} target
+ * returns a function which traps `target` function calls
+ * 
+ * @template {{(...any: any[]): any; prototype: any}} T
+ * @param {T} target
  * @param {onApply} onApply
+ * @returns {T}
  */
 export const intercept = ( target, onApply ) => {
 	const fn = function ( ...args ) {
@@ -11,12 +13,13 @@ export const intercept = ( target, onApply ) => {
 
 	fn.prototype = target.prototype;
 
+	// @ts-ignore
 	return fn;
 };
 
 /**
  * call `target` function as it should have
- * 
+ *
  * @type {onApply}
  */
 export const invoke = ( target, thisArg, args ) => {
