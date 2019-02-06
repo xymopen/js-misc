@@ -1,5 +1,4 @@
 /**
- *
  * @template {TypedEventTarget<"load" | "error">} T
  * @param {T} target
  * @return {Promise<T>}

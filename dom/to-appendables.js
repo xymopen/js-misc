@@ -1,8 +1,8 @@
 /// <reference lib="es2017.object" />
 
 /**
- * convert plain object to appendable data
- *
+ * Convert plain object to appendable data
+ * 
  * @template V
  * @template {Appendable<V>} T
  * @param {Record<string, V>} data
@@ -17,15 +17,15 @@ const toAppend = ( data, struct ) =>
 	}, struct );
 
 /**
- * convert plain object to FormData
+ * Convert plain object to FormData
  *
  * @param {Record<string, string | Blob>} data
  */
 export const toFormData = data => toAppend( data, new FormData() );
 
 /**
- * convert plain object to URLSearchParams
- * 
+ * Convert plain object to URLSearchParams
+ *
  * @param {Record<string, string>} data
  */
 export const toSearchParams = data => toAppend( data, new URLSearchParams() );

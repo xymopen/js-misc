@@ -1,12 +1,12 @@
 /**
- * convert from kebab-case to camelCase
+ * Convert from kebab-case to camelCase
  *
  * @param {string} str
  */
 const camelCase = str => str.replace( /-[a-z]/g, $0 => $0.charAt( 1 ).toUpperCase() );
 
 /**
- * convert from camelCase to kebab-case
+ * Convert from camelCase to kebab-case
  * 
  * @param {string} str
  */

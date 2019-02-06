@@ -1,5 +1,5 @@
 /**
- * returns variables declared globally
+ * Returns variables declared globally
  */
 export const variables = () => {
 	const frame = document.createElement( "iframe" ),

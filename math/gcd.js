@@ -1,5 +1,5 @@
 /**
- * euclidean algorithm to evaluate greatest common divisor
+ * Euclidean algorithm to evaluate greatest common divisor
  *
  * @param {number} a
  * @param {number} b
@@ -15,7 +15,7 @@ export const gcd = ( a, b ) => {
 };
 
 /**
- * lowest common multiple
+ * Lowest common multiple
  * 
  * @param {number} a
  * @param {number} b
