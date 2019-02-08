@@ -28,7 +28,7 @@ export const toFormData = data => toAppend( data, new FormData() );
  *
  * @param {Record<string, string>} data
  */
-export const toSearchParams = data => toAppend( data, new URLSearchParams() );
+export const toURLSearchParams = data => toAppend( data, new URLSearchParams() );
 
 /**
  *
