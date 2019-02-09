@@ -33,14 +33,14 @@ export const lazy = ( executor, sideEffect = true ) => {
 	promise.then = function then( onFulfilled, onRejected ) {
 		// onFulfilled === undefined => catch()
 		// onFulfilled === onRejected => finally()
-		if ( ( undefined !== onFulfilled ||
-			( sideEffect && undefined !== onRejected ) ) &&
+		if ( ( "function" === typeof onFulfilled ||
+			( sideEffect && "function" === typeof onRejected ) ) &&
 			// @ts-ignore
 			onFulfilled !== onRejected ) {
 			execute();
 		}
 
-		return Promise.prototype.then.call( this, onFulfilled, onRejected );
+		return Object.getPrototypeOf( this ).then.call( this, onFulfilled, onRejected );
 	};
 
 	return promise;
