@@ -1,5 +1,5 @@
 /**
- * resolves when any promise resolves,
+ * Resolves when some promise resolved,
  * rejects when all promises rejected
  * @template T
  * @param {(T | PromiseLike<T>)[]} promises
