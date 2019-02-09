@@ -9,6 +9,7 @@
 export const lazy = ( executor, sideEffect = true ) => {
 	let resolve, reject;
 
+	/** @type {Promise<T>} */
 	const promise = new Promise( ( _resolve, _reject ) => {
 		resolve = _resolve;
 		reject = _reject;

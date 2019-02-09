@@ -2,9 +2,7 @@
 /// <reference lib="es2017.string" />
 
 export const UUID4 = () => {
-	/**
-	 * @param {Uint8Array | Uint8ClampedArray} bin
-	 */
+	/** @param {Uint8Array | Uint8ClampedArray} bin */
 	const hex = bin =>
 		Array.from( bin ).map( b => b.toString( 16 ).padStart( 2, "0" ) ).join( "" );
 

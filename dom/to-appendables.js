@@ -31,7 +31,6 @@ export const toFormData = data => toAppend( data, new FormData() );
 export const toURLSearchParams = data => toAppend( data, new URLSearchParams() );
 
 /**
- *
  * @template V
  * @typedef Appendable
  * @property {(name: string, value: V) => void} append

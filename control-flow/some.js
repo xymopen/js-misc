@@ -5,13 +5,9 @@
  * @param {(T | PromiseLike<T>)[]} promises
  */
 export const some = async promises => {
-	/**
-	 * @type {any[]}
-	 */
+	/** @type {any[]} */
 	const reasons = [];
-	/**
-	 * @type {T[] & {errors?: any[]}}
-	 */
+	/** @type {T[] & {errors?: any[]}} */
 	let values = [];
 
 	for ( let promise of promises ) {

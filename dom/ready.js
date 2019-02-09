@@ -5,9 +5,7 @@
  */
 export const ready = target =>
 	new Promise( ( resolve, reject ) => {
-		/**
-		 * @param {ErrorEvent} ev
-		 */
+		/** @param {ErrorEvent} ev */
 		const rejectHandler = ev => reject( ev.error );
 
 		target.addEventListener( "load", () => resolve( target ) );
