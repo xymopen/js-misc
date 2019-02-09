@@ -1,9 +1,9 @@
 /**
  * Returns a function which traps `target` function calls
- * 
+ *
  * @template {{(...any: any[]): any; prototype: any}} T
  * @param {T} target
- * @param {onApply} onApply
+ * @param {onApply<T>} onApply
  * @returns {T}
  */
 export const intercept = ( target, onApply ) => {
@@ -19,16 +19,17 @@ export const intercept = ( target, onApply ) => {
 
 /**
  * Call `target` function as it should have
- *
- * @type {onApply}
+ * 
+ * @type {onApply<Function>}
  */
 export const invoke = ( target, thisArg, args ) => {
 	return target.apply( thisArg, args )
 };
 
 /**
+ * @template {Function} T
  * @callback onApply
- * @param {Function} target - Function should have invoked
+ * @param {T} target - Function should have invoked
  * @param {object | undefined} thisArg - Used as `this` to the target
  * @param {any[]} args - Arguments passed to the target.
  * @returns {any}
