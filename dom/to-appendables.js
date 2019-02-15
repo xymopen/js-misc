@@ -1,4 +1,5 @@
 /// <reference lib="es2017.object" />
+/// <reference lib="dom" />
 
 /**
  * Convert plain object to appendable data

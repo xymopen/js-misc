@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 /**
  * Returns variables declared globally
  */
