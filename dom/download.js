@@ -7,7 +7,7 @@ export const download = ( url, filename = new URL( url ).pathname.split( "/" ).p
 
 	a.download = filename;
 	a.href = url;
-	a.rel = "noopener"
+	a.rel = "noopener";
 	a.target = "_blank";
 
 	a.click();

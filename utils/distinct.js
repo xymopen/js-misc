@@ -2,7 +2,7 @@
 /**
  * `Array.prototype.indexOf()` with
  * [`SameValueZero`](https://www.ecma-international.org/ecma-262/index.html#sec-samevaluezero
- * "ECMAScript® 2018 Language Specification#7.2.11 SameValueZero(x, y)") comparsion
+ * "ECMAScript® 2018 Language Specification#7.2.11 SameValueZero(x, y)") comparsion
  * 
  * @template T
  * @param {T[]} array
@@ -30,7 +30,7 @@ export const distinct = ( left, right ) => {
 
 		if ( i >= 0 ) {
 			complementRight.splice( i, 1 );
-			intersection.push( el )
+			intersection.push( el );
 
 			return false;
 		} else {

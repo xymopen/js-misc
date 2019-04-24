@@ -23,7 +23,7 @@ export const intercept = ( target, onApply ) => {
  * @type {onApply<Function>}
  */
 export const invoke = ( target, thisArg, args ) => {
-	return target.apply( thisArg, args )
+	return target.apply( thisArg, args );
 };
 
 /**

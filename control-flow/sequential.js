@@ -41,7 +41,7 @@ export const sequentialAsync = ( asyncFn, maxConcurrency = 1 ) => {
 		} else {
 			concurrency -= 1;
 		}
-	};
+	}
 
 	// @ts-ignore
 	return function ( ...args ) {
@@ -108,7 +108,7 @@ export const sequentialCallback = ( callbackFn, maxConcurrency = 1 ) => {
 		} else {
 			concurrency -= 1;
 		}
-	};
+	}
 
 	// @ts-ignore
 	return function ( ...args ) {

@@ -24,7 +24,7 @@ export const execute = ( context, middles, bottom ) => {
 	};
 
 	return next( context );
-}
+};
 
 /**
  * `Koa`-style middleware API which implements
@@ -57,7 +57,7 @@ export const app = bottom => {
 	};
 
 	return exec;
-}
+};
 
 /**
  * @template C, R
