@@ -3,6 +3,8 @@
  * rejects when all promises rejected
  * @template T
  * @param {(T | PromiseLike<T>)[]} promises
+ * @deprecated - in favor for [`Promise.allSettled()`](https://github.com/tc39/proposal-promise-allSettled
+ * 	"tc39/proposal-promise-allSettled: ECMAScript Proposal, specs, and reference implementation for Promise.allSettled")
  */
 export const some = async promises => {
 	/** @type {any[]} */
