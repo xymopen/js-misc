@@ -5,7 +5,6 @@
 
 "break jsdoc";
 
-
 /** @param {number} n */
 export const encode = function* ( n ) {
 	while ( n > 0b01111111 ) {

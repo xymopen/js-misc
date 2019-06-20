@@ -5,7 +5,6 @@
 
 "break jsdoc";
 
-
 /** @param {number} n */
 export const encode = n => n < 0 ? -n * 2 - 1 : n * 2;
 
