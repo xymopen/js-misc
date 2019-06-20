@@ -10,15 +10,15 @@
  * @see [C++ Reference](https://en.cppreference.com/w/cpp/numeric/random/linear_congruential_engine)
  */
 export function* lcg( x = Date.now(), a = 1103515245, c = 12345, m = 0x80000000 ) {
-	if ( a <= 0 ) {
+	if ( !( a > 0 ) ) {
 		throw new TypeError( "Multiplier(a) must greater than 0" );
-	} else if ( c < 0 ) {
+	} else if ( !( c >= 0 ) ) {
 		throw new TypeError( "Increment(c) must greater than or equal to 0" );
-	} else if ( m <= 0 ) {
+	} else if ( !( m > 0 ) ) {
 		throw new TypeError( "Modulus(m) must greater than 0" );
-	} else if ( a >= m ) {
+	} else if ( !( a < m ) ) {
 		throw new TypeError( "Multiplier(a) must less than modulus(m)" );
-	} else if ( c >= m ) {
+	} else if ( !( c < m ) ) {
 		throw new TypeError( "Increment(c) must less than modulus(m)" );
 	} else {
 		x = Math.abs( x ) % m;
