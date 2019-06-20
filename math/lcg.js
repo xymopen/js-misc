@@ -7,7 +7,7 @@
  * @param {number} m - Modulus
  * @yields {number} - Positive number less than modulus(m)
  * @see [Wikipedia](https://en.wikipedia.org/wiki/Linear_congruential_generator)
- * @see [C++ Reference](https://zh.cppreference.com/w/cpp/numeric/random/linear_congruential_engine)
+ * @see [C++ Reference](https://en.cppreference.com/w/cpp/numeric/random/linear_congruential_engine)
  */
 export function* lcg( x = Date.now(), a = 1103515245, c = 12345, m = 0x80000000 ) {
 	if ( a <= 0 ) {
