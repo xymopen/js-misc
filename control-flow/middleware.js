@@ -7,23 +7,26 @@
  * @param {Bottomware<C, R>} bottom
  */
 export const execute = ( context, middles, bottom ) => {
-	/**
-	 * @param {C} context
-	 * @returns {R}
-	 */
-	const next = context => {
+	/** @param {Iterator<Middleware<C, R>>} middles */
+	const next = middles => {
 		const record = middles.next();
 
-		if ( record.done ) {
-			return bottom( context );
-		} else {
-			const middleware = record.value;
+		/**
+		 * @param {C} context
+		 * @returns {R}
+		 */
+		const fn = context => {
+			if ( record.done ) {
+				return bottom( context );
+			} else {
+				return record.value( context, next( middles ) );
+			}
+		};
 
-			return middleware( context, next );
-		}
+		return fn;
 	};
 
-	return next( context );
+	return next( middles )( context );
 };
 
 /**
