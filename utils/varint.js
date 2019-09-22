@@ -6,7 +6,7 @@
 "break jsdoc";
 
 /** @param {number} n */
-export const encode = function* ( n ) {
+export function* encode( n ) {
 	while ( n > 0b01111111 ) {
 		yield n & 0b01111111 | 0 << 8;
 		n >>>= 7;
@@ -15,7 +15,7 @@ export const encode = function* ( n ) {
 	yield n | 1 << 7;
 };
 
-export const decode = function* () {
+export function* decode() {
 	/** @type {number} n */
 	let n = 0, i = 0;
 
