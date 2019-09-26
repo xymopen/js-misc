@@ -1,17 +1,63 @@
 /// <reference lib="es2018.promise" />
 
-/**
- * Create a function which always calls `onFinally()` when `asyncFn()` finishes
- * @template {(...any: any[]) => Promise<any>} F
- * @param {F} asyncFn
- * @param {() => void} onFinally
- * @returns {F}
- */
-const finallyAsync = ( asyncFn, onFinally ) =>
-	// @ts-ignore
-	function ( ...args ) {
-		return asyncFn.apply( this, args ).finally( onFinally );
+/** @param {number} maxConcurrency */
+const sequential = maxConcurrency => {
+	/**
+	 * @typedef {() => void} F
+	 * @typedef {(onFinally: F) => void} D
+	*/
+
+	let concurrency = 0;
+
+	/** @type {D[]} */
+	const queue = [];
+
+	const onFinally = () => {
+		if ( queue.length > 0 ) {
+			queue.shift()( onFinally );
+		} else {
+			concurrency -= 1;
+		}
 	};
+
+	/**
+	 * @template R
+	 * @template {(onFinally: F) => R} E
+	 * @param {E} execute
+	 * @param {(execute: E) => { resolve: D, placeholder: R }} defer
+	 */
+	const sequenced = ( execute, defer ) => {
+		if ( concurrency < maxConcurrency ) {
+			concurrency += 1;
+
+			return execute( onFinally );
+		} else {
+			const { resolve, placeholder } = defer( execute );
+
+			queue.push( resolve );
+
+			return placeholder;
+		}
+	};
+
+	return { sequenced, onFinally };
+};
+
+/** @template R */
+const makePromise = () => {
+	/** @type {(value?: R | PromiseLike<R>) => void} */
+	let resolve;
+	/** @type {(reason?: any) => void} */
+	let reject;
+
+	/** @type {Promise<R>} */
+	const promise = new Promise( ( _resolve, _reject ) => {
+		resolve = _resolve;
+		reject = _reject;
+	} );
+
+	return { promise, resolve, reject };
+};
 
 /**
  * Create a function which limits how many operations can be pendding
@@ -26,62 +72,27 @@ const finallyAsync = ( asyncFn, onFinally ) =>
 export const sequentialAsync = ( asyncFn, maxConcurrency = 1 ) => {
 	/**  @typedef {PromiseValueType<ReturnType<F>>} T */
 
-	let concurrency = 0;
-
-	/** @type {[(value?: T | PromiseLike<T>) => void, any[], object | undefined][]} */
-	const queue = [],
-		composed = finallyAsync( asyncFn, onFinally );
-
-
-	function onFinally() {
-		if ( queue.length > 0 ) {
-			const [ resolve, args, thisArg ] = queue.shift();
-
-			resolve( composed.apply( thisArg, args ) );
-		} else {
-			concurrency -= 1;
-		}
-	}
+	const { sequenced, onFinally } = sequential( maxConcurrency );
+	/** A function which always calls `onFinally()` when `callbackFn()` finishes */
+	const composed = function ( ...args ) {
+		return asyncFn.apply( this, args ).finally( onFinally );
+	};
 
 	// @ts-ignore
 	return function ( ...args ) {
-		if ( concurrency < maxConcurrency ) {
-			concurrency += 1;
+		const executor = () =>
+			composed.apply( this, args );
 
-			return composed.apply( this, args );
-		} else {
-			return new Promise( resolve => {
-				queue.push( [ resolve, args, this ] );
-			} );
-		}
+		return sequenced( executor, () => {
+			const { promise: placeholder, resolve } = makePromise();
+
+			const resolver = () =>
+				resolve( executor() );
+
+			return { resolve: resolver, placeholder };
+		} );
 	};
 };
-
-/**
- * Create a function which always calls `onFinally()` when `callbackFn()` finishes
- * @template {(...any: any[]) => void} F
- * @param {F} callbackFn
- * @param {() => void} onFinally
- * @returns {F}
- */
-const finallyCallback = ( callbackFn, onFinally ) =>
-	// @ts-ignore
-	function ( ...args ) {
-		if ( "function" == typeof args[ args.length - 1 ] ) {
-			/** @type {(...any: any[]) => void} */
-			const callback = args[ args.length - 1 ];
-
-			args[ args.length - 1 ] = function () {
-				onFinally();
-
-				return callback.apply( this, args );
-			};
-		} else {
-			args.push( () => onFinally() );
-		}
-
-		callbackFn.apply( this, args );
-	};
 
 /**
  * Create a function which limits how many operations can be pendding
@@ -94,37 +105,41 @@ const finallyCallback = ( callbackFn, onFinally ) =>
  * @returns {F}
  */
 export const sequentialCallback = ( callbackFn, maxConcurrency = 1 ) => {
-	let concurrency = 0;
+	const { sequenced, onFinally } = sequential( maxConcurrency );
+	/** A function which always calls `onFinally()` when `callbackFn()` finishes */
+	const composed = function ( ...args ) {
+		const lastIdx = args.length - 1;
 
-	/** @type {[any[], object | undefined][]} */
-	const queue = [],
-		composed = finallyCallback( callbackFn, onFinally );
+		if ( "function" == typeof args[ lastIdx ] ) {
+			const callback = args[ lastIdx ];
 
-	function onFinally() {
-		if ( queue.length > 0 ) {
-			const [ args, thisArg ] = queue.shift();
+			args[ lastIdx ] = function () {
+				onFinally();
 
-			composed.apply( thisArg, args );
+				return callback.apply( this, args );
+			};
 		} else {
-			concurrency -= 1;
+			args.push( onFinally );
 		}
-	}
+
+		callbackFn.apply( this, args );
+	};
 
 	// @ts-ignore
 	return function ( ...args ) {
-		if ( concurrency < maxConcurrency ) {
-			concurrency += 1;
+		const execute = () =>
+			composed.apply( this, args );
 
-			return composed.apply( this, args );
-		} else {
-			queue.push( [ args, this ] );
-		}
+		return sequenced( execute, () => ( {
+			resolve: () => execute(),
+			placeholder: undefined
+		} ) );
 	};
 };
 
 /**
  * Obtain the result type of a promise type
  * @template T
- // @ts-ignore
+// @ts-ignore
  * @typedef {T extends Promise<infer P> ? P : never} PromiseValueType
  */
