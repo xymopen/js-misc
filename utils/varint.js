@@ -29,7 +29,6 @@ export function* encode( n ) {
 
 /** @returns {Generator<void, number>} */
 export function* decode() {
-	// Lower 31 bits in n are usable
 	let n = 0, i = 0;
 
 	while ( true ) {
@@ -40,13 +39,18 @@ export function* decode() {
 		if ( !end ) {
 			n |= data << ( i * 7 );
 			i += 1;
-		// If the last uses no more than 3 bits
+		// If the last uses no more than 4 bits
 		// then n has 28 bits left for other 4 bytes
 		// Otherwisw it only accounts for 3
-		} else if ( i <= ( data >>> 3 === 0 ? 4 : 3 ) ) {
-			return n | data << ( i * 7 );
+		} else if ( i <= ( data >>> 4 === 0 ? 4 : 3 ) ) {
+			const p = n | data << ( i * 7 );
+
+			return p < 0 ?
+				// Reinterpret int32 as uint32
+				0x100000000 + p :
+				p;
 		} else {
-			throw new RangeError( "Cannot decode number greater than 2147483647" );
+			throw new RangeError( "Cannot decode number greater than 4294967295" );
 		}
 	}
 };
