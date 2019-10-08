@@ -18,16 +18,16 @@ export const promisifyIterator = it => {
 
 	it.next = function ( ...args ) {
 		/** @type {IteratorResult<T>} */
-		let record;
+		let result;
 
 		try {
-			record = next.apply( this, args );
+			result = next.apply( this, args );
 
-			if ( record.done ) {
-				resolve( record.value );
+			if ( result.done ) {
+				resolve( result.value );
 			}
 
-			return record;
+			return result;
 		} catch ( error ) {
 			reject( error );
 

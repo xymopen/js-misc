@@ -9,17 +9,17 @@
 export const execute = ( context, middles, bottom ) => {
 	/** @param {Iterator<Middleware<C, R>>} middles */
 	const next = middles => {
-		const record = middles.next();
+		const result = middles.next();
 
 		/**
 		 * @param {C} context
 		 * @returns {R}
 		 */
 		const fn = context => {
-			if ( record.done ) {
+			if ( result.done ) {
 				return bottom( context );
 			} else {
-				return record.value( context, next( middles ) );
+				return result.value( context, next( middles ) );
 			}
 		};
 
