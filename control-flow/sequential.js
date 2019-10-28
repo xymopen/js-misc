@@ -1,5 +1,7 @@
 /// <reference lib="es2018.promise" />
 
+import { makePromise } from "../utils/make-promise.js";
+
 /** @param {number} maxConcurrency */
 const sequential = maxConcurrency => {
 	/**
@@ -43,22 +45,6 @@ const sequential = maxConcurrency => {
 	return { sequenced, onFinally };
 };
 
-/** @template R */
-const makePromise = () => {
-	/** @type {(value?: R | PromiseLike<R>) => void} */
-	let resolve;
-	/** @type {(reason?: any) => void} */
-	let reject;
-
-	/** @type {Promise<R>} */
-	const promise = new Promise( ( _resolve, _reject ) => {
-		resolve = _resolve;
-		reject = _reject;
-	} );
-
-	return { promise, resolve, reject };
-};
-
 /**
  * Create a function which limits how many operations can be pendding
  *
@@ -84,10 +70,8 @@ export const sequentialAsync = ( asyncFn, maxConcurrency = 1 ) => {
 			composed.apply( this, args );
 
 		return sequenced( executor, () => {
-			const { promise: placeholder, resolve } = makePromise();
-
-			const resolver = () =>
-				resolve( executor() );
+			const { promise: placeholder, resolve } = makePromise(),
+				resolver = () => resolve( executor() );
 
 			return { resolve: resolver, placeholder };
 		} );

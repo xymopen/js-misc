@@ -1,3 +1,5 @@
+import { makePromise } from "../utils/make-promise.js";
+
 /**
  * Obtain the return value of an iterator
  * or capture its error
@@ -7,14 +9,8 @@
  * @returns {Promise<T>}
  */
 export const promisifyIterator = it => {
-	const next = it.next;
-	let resolve, reject;
-
-	/** @type {Promise<T>} */
-	const promise = new Promise( ( _resolve, _reject ) => {
-		resolve = _resolve;
-		reject = _reject;
-	} );
+	const next = it.next,
+		{ promise, resolve, reject } = makePromise();
 
 	it.next = function ( ...args ) {
 		/** @type {IteratorResult<T>} */

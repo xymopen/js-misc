@@ -2,7 +2,7 @@
  * Create a [lazy evaluated](https://en.wikipedia.org/wiki/Lazy_evaluation "Lazy evaluation - Wikipedia") promise
  *
  * @template T
- * @param {(resolve: (value?: T | PromiseLike<T>) => void, reject: (reason?: any) => void) => void} executor
+ * @param {PromiseExecutor<T>} executor
  * @param {boolean} [sideEffect] - Whether `executor` has side effect
  * @returns {Promise<T>}
  */
@@ -51,4 +51,9 @@ export const lazy = ( executor, sideEffect = true ) => {
  * @see https://stackoverflow.com/questions/48158730/extend-javascript-promise-and-resolve-or-reject-it-inside-constructor
  * `lazy()` cannot be provided as a subclass to `Promise()`
  * because `executor()` must be called during Promise construction
+ */
+
+/**
+ * @template T
+ * @typedef {import("../utils/make-promise.js").PromiseExecutor<T>} PromiseExecutor
  */
