@@ -2,7 +2,7 @@
  * @template T
  * @param {string} title
  * @param {T} node
- * @param {(context: T) => Iterator<[string] | [string, T]>} deepen
+ * @param {Deepener<T>} deepen
  * @param {string} ps1 - prompt string for first line of normal entry
  * @param {string} ps2 - prompt string for normal line of normal entry
  * @param {string} ps3 - prompt string for first line of last entry
@@ -66,7 +66,7 @@ function* treeNode(
  * @template T
  * @param {string} title
  * @param {T} node
- * @param {(context: T) => Iterator<[string] | [string, T]>} deepen
+ * @param {Deepener<T>} deepen
  * @param {string} ps1 - prompt string for first line of normal entry
  * @param {string} ps2 - prompt string for normal line of normal entry
  * @param {string} ps3 - prompt string for first line of last entry
@@ -103,3 +103,10 @@ export function* tree(
 		""
 	);
 };
+
+/**
+ * @template T
+ * @callback Deepener
+ * @param {T} context
+ * @returns {Iterator<[string] | [string, T]>}
+ */

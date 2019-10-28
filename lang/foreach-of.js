@@ -4,7 +4,7 @@
 /**
  * @template T
  * @param {Iterator<T>} iterator
- * @param {(value: T) => void} callback
+ * @param {onCallback<T>} callback
  */
 export const forEachOf = ( iterator, callback ) => {
 	for ( let cur = iterator.next(); !cur.done; cur = iterator.next() ) {
@@ -15,7 +15,7 @@ export const forEachOf = ( iterator, callback ) => {
 /**
  * @template T
  * @param {AsyncIterator<T>} iterator
- * @param {(value: T) => void} callback
+ * @param {onCallback<T>} callback
  * @returns {Promise<void>}
  */
 export const forAwaitEachOf = ( iterator, callback ) =>
@@ -31,3 +31,10 @@ export const forAwaitEachOf = ( iterator, callback ) =>
 			}, reject );
 		} )( iterator );
 	} );
+
+/**
+ * @template T
+ * @callback onCallback
+ * @param {T} value
+ * @returns {void}
+ */
