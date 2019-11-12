@@ -62,7 +62,7 @@ function* treeNode(
 
 /**
  * List contents in a tree-like format
- * 
+ *
  * @template T
  * @param {string} title
  * @param {T} node
@@ -71,7 +71,7 @@ function* treeNode(
  * @param {string} ps2 - prompt string for normal line of normal entry
  * @param {string} ps3 - prompt string for first line of last entry
  * @param {string} ps4 - prompt string for normal line of last entry
- * @example ```
+ * @example
  * // Shell TREE(1)
  * for ( const line of tree( process.cwd(), process.cwd(), function* ( dirname ) {
  * 	for ( const filename of fs.readdirSync( dirname ) ) {
@@ -86,7 +86,6 @@ function* treeNode(
  * } ) ) {
  * 	console.log( line );
  * }
- * ```
  */
 export function* tree(
 	title, node, deepen,
