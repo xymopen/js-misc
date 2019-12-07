@@ -23,8 +23,8 @@ function* treeNode(
 		const result = children.next();
 
 		if ( !result.done ) {
-			/** @type {[string, T]} */
-			let lastValue = result.value;
+			let lastValue = /** @type {[string] | [string, T]} */
+				( result.value );
 
 			while ( true ) {
 				const result = children.next();
@@ -53,7 +53,8 @@ function* treeNode(
 						`${ is2 }${ ps2 }`
 					);
 
-					lastValue = result.value;
+					lastValue = /** @type {[string] | [string, T]} */
+						( result.value );
 				}
 			}
 		}
@@ -107,5 +108,5 @@ export function* tree(
  * @template T
  * @callback Deepener
  * @param {T} context
- * @returns {Iterator<[string] | [string, T]>}
+ * @returns {Iterator<[string] | [string, T], void>}
  */
