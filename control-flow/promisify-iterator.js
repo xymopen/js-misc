@@ -3,7 +3,7 @@ import { makePromise } from "../utils/make-promise.js";
 /**
  * Obtain the return value of an iterator
  * or capture its error
- * 
+ *
  * @template T
  * @param {Iterator<T>} it
  * @returns {Promise<T>}

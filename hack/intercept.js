@@ -19,7 +19,7 @@ export const intercept = ( target, onApply ) => {
 
 /**
  * Call `target` function as it should have
- * 
+ *
  * @type {onApply<Function>}
  */
 export const invoke = ( target, thisArg, args ) => {

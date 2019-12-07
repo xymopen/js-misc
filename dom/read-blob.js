@@ -14,7 +14,7 @@ const read = ( blob, method ) => new Promise( ( resolve, reject ) => {
 
 /**
  * Provide `Body`-like consumption API for `Blob`s
- * 
+ *
  * @param {Blob} blob
  */
 export const readBlob = blob => {

@@ -1,6 +1,6 @@
 /**
  * Linear congruential generator
- * 
+ *
  * @param {number} x
  * @param {number} a - Multiplier
  * @param {number} c - Increment

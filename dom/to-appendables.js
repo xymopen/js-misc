@@ -3,7 +3,7 @@
 
 /**
  * Convert plain object to appendable data
- * 
+ *
  * @template V
  * @template {Appendable<V>} T
  * @param {Record<string, V>} data

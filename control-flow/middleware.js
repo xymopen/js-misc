@@ -33,7 +33,7 @@ export const execute = ( context, middles, bottom ) => {
  * `Koa`-style middleware API which implements
  * [chain of responsibility](https://en.wikipedia.org/wiki/Chain-of-responsibility_pattern
  * "Chain-of-responsibility pattern - Wikipedia") design pattern
- * 
+ *
  * @template C
  * @param {Bottomware<C, Promise<void>>} bottom
  */

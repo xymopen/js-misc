@@ -16,7 +16,7 @@ export const gcd = ( a, b ) => {
 
 /**
  * Lowest common multiple
- * 
+ *
  * @param {number} a
  * @param {number} b
  */
