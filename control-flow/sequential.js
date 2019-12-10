@@ -5,9 +5,15 @@ import { makePromise } from "../utils/make-promise.js";
 /** @param {number} maxConcurrency */
 const sequential = maxConcurrency => {
 	/**
-	 * @typedef {() => void} F
-	 * @typedef {(onFinally: F) => void} D
-	*/
+	 * @callback F
+	 * @returns {void}
+	 */
+
+	/**
+	 * @callback D
+	 * @param {F} onFinally
+	 * @returns {void}
+	 */
 
 	let concurrency = 0;
 
@@ -24,9 +30,32 @@ const sequential = maxConcurrency => {
 
 	/**
 	 * @template R
-	 * @template {(onFinally: F) => R} E
+	 * @callback Executor
+	 * @param {F} onFinally
+	 * @returns {R}
+	 */
+
+	/**
+	 * @template R
+	 * @typedef DefererReturnType
+	 * @property {D} resolve
+	 * @property {R} placeholder
+	 * @returns {void}
+	 */
+
+	/**
+	 * @template R
+	 * @template {Executor<R>} E
+	 * @callback Deferer
+	 * @param {E} onFinally
+	 * @returns {DefererReturnType<R>}
+	 */
+
+	/**
+	 * @template R
+	 * @template {Executor<R>} E
 	 * @param {E} execute
-	 * @param {(execute: E) => { resolve: D, placeholder: R }} defer
+	 * @param {Deferer<R, E>} defer
 	 */
 	const sequenced = ( execute, defer ) => {
 		if ( concurrency < maxConcurrency ) {
@@ -50,10 +79,10 @@ const sequential = maxConcurrency => {
  *
  * `maxConcurrency = 1` causes operations to be done sequentially
  *
- * @template {(...any: any[]) => Promise<any>} F
+ * @template {ParamAsyncFunction} F
  * @param {F} asyncFn
  * @param {number} maxConcurrency
- * @returns {SequentialAsyncFunction<F>}
+ * @returns {ReturnAsyncFunction<F>}
  */
 export const sequentialAsync = ( asyncFn, maxConcurrency = 1 ) => {
 	/**  @typedef {PromiseValueType<ReturnType<F>>} T */
@@ -91,10 +120,10 @@ export const sequentialAsync = ( asyncFn, maxConcurrency = 1 ) => {
  *
  * `maxConcurrency = 1` causes operations to be done sequentially
  *
- * @template {(...any: any[]) => void} F
+ * @template {ParamCallbackFunction} F
  * @param {F} callbackFn
  * @param {number} maxConcurrency
- * @returns {SequentialCallbackFunction<F>}
+ * @returns {ReturnCallbackFunction<F>}
  */
 export const sequentialCallback = ( callbackFn, maxConcurrency = 1 ) => {
 	const { sequenced, onFinally } = sequential( maxConcurrency );
@@ -136,21 +165,34 @@ export const sequentialCallback = ( callbackFn, maxConcurrency = 1 ) => {
 
 /**
  * Obtain the result type of a promise type
+ * 
  * @template T
 // @ts-ignore
  * @typedef {T extends Promise<infer P> ? P : never} PromiseValueType
  */
 
 /**
- * @template {(...any: any[]) => Promise<any>} F
- * @callback SequentialAsyncFunction
+ * @callback ParamAsyncFunction
+ * @param {...any[]} args
+ * @returns {Promise<any>}
+ */
+
+/**
+ * @template {ParamAsyncFunction} F
+ * @callback ReturnAsyncFunction
  * @param {...Parameters<F>} args
  * @returns {Promise<PromiseValueType<ReturnType<F>>>}
  */
 
 /**
- * @template {(...any: any[]) => void} F
- * @callback SequentialCallbackFunction
+ * @callback ParamCallbackFunction
+ * @param {...any[]} args
+ * @returns {void}
+ */
+
+/**
+ * @template {ParamCallbackFunction} F
+ * @callback ReturnCallbackFunction
  * @param {...Parameters<F>} args
  * @returns {void}
  */
