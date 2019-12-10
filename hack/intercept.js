@@ -13,8 +13,7 @@ export const intercept = ( target, onApply ) => {
 
 	fn.prototype = target.prototype;
 
-	// @ts-ignore
-	return fn;
+	return /** @type {T} */ ( /** @type {unknown} */ ( fn ) );
 };
 
 /**

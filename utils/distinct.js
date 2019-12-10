@@ -9,8 +9,11 @@
  * @param {T} value
  */
 const indexOf = ( array, value ) =>
-	// @ts-ignore
-	Number.isNaN( value ) ? array.findIndex( el => Number.isNaN( el ) ) : array.indexOf( value );
+	Number.isNaN( /** @type {number} */( /** @type {unknown} */ ( value ) ) ) ?
+		array.findIndex( el => Number.isNaN(
+			/** @type {number} */( /** @type {unknown} */ ( el ) )
+		) ) :
+		array.indexOf( value );
 
 /**
  * Returns two arrays with their distinct

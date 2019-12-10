@@ -53,18 +53,23 @@ const sequential = maxConcurrency => {
  * @template {(...any: any[]) => Promise<any>} F
  * @param {F} asyncFn
  * @param {number} maxConcurrency
- * @returns {F}
+ * @returns {SequentialAsyncFunction<F>}
  */
 export const sequentialAsync = ( asyncFn, maxConcurrency = 1 ) => {
 	/**  @typedef {PromiseValueType<ReturnType<F>>} T */
 
 	const { sequenced, onFinally } = sequential( maxConcurrency );
-	/** A function which always calls `onFinally()` when `callbackFn()` finishes */
+
+	/**
+	 * A function which always calls `onFinally()` when `callbackFn()` finishes
+	 *
+	 * @param {Parameters<F>} args
+	 * @returns {ReturnType<F>}
+	 */
 	const composed = function ( ...args ) {
 		return asyncFn.apply( this, args ).finally( onFinally );
 	};
 
-	// @ts-ignore
 	return function ( ...args ) {
 		const executor = () =>
 			composed.apply( this, args );
@@ -73,7 +78,10 @@ export const sequentialAsync = ( asyncFn, maxConcurrency = 1 ) => {
 			const { promise: placeholder, resolve } = makePromise(),
 				resolver = () => resolve( executor() );
 
-			return { resolve: resolver, placeholder };
+			return {
+				resolve: resolver,
+				placeholder
+			};
 		} );
 	};
 };
@@ -86,11 +94,17 @@ export const sequentialAsync = ( asyncFn, maxConcurrency = 1 ) => {
  * @template {(...any: any[]) => void} F
  * @param {F} callbackFn
  * @param {number} maxConcurrency
- * @returns {F}
+ * @returns {SequentialCallbackFunction<F>}
  */
 export const sequentialCallback = ( callbackFn, maxConcurrency = 1 ) => {
 	const { sequenced, onFinally } = sequential( maxConcurrency );
-	/** A function which always calls `onFinally()` when `callbackFn()` finishes */
+
+	/**
+	 * A function which always calls `onFinally()` when `callbackFn()` finishes
+	 *
+	 * @param {Parameters<F>} args
+	 * @returns {void}
+	 */
 	const composed = function ( ...args ) {
 		const lastIdx = args.length - 1;
 
@@ -109,7 +123,6 @@ export const sequentialCallback = ( callbackFn, maxConcurrency = 1 ) => {
 		callbackFn.apply( this, args );
 	};
 
-	// @ts-ignore
 	return function ( ...args ) {
 		const execute = () =>
 			composed.apply( this, args );
@@ -126,4 +139,18 @@ export const sequentialCallback = ( callbackFn, maxConcurrency = 1 ) => {
  * @template T
 // @ts-ignore
  * @typedef {T extends Promise<infer P> ? P : never} PromiseValueType
+ */
+
+/**
+ * @template {(...any: any[]) => Promise<any>} F
+ * @callback SequentialAsyncFunction
+ * @param {...Parameters<F>} args
+ * @returns {Promise<PromiseValueType<ReturnType<F>>>}
+ */
+
+/**
+ * @template {(...any: any[]) => void} F
+ * @callback SequentialCallbackFunction
+ * @param {...Parameters<F>} args
+ * @returns {void}
  */
