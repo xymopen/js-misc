@@ -12,6 +12,7 @@
         "sourceType": "module"
     },
     "rules": {
+        "no-extra-semi": "off",
         "semi": "error",
         "quotes": [
             "error",
