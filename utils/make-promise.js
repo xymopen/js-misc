@@ -21,6 +21,14 @@ export const makePromise = () => {
 };
 
 /**
+ * Obtain the result type of a promise type
+ *
+ * @template T
+// @ts-ignore
+ * @typedef {T extends Promise<infer P> ? P : never} PromiseValueType
+ */
+
+/**
  * @template T
  * @callback PromiseResolver
  * @param {T | PromiseLike<T>} [value]

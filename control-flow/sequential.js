@@ -164,11 +164,8 @@ export const sequentialCallback = ( callbackFn, maxConcurrency = 1 ) => {
 };
 
 /**
- * Obtain the result type of a promise type
- * 
  * @template T
-// @ts-ignore
- * @typedef {T extends Promise<infer P> ? P : never} PromiseValueType
+ * @typedef {import("../utils/make-promise").PromiseValueType<T>} PromiseValueType
  */
 
 /**
