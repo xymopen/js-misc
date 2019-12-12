@@ -41,6 +41,7 @@ export const intercept = ( target, onApply ) => {
  * @returns {OnApplyReturnType<F>}
  */
 export const invoke = ( target, thisArg, args ) => {
+	// @ts-ignore
 	return target.apply( thisArg, args );
 };
 

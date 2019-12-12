@@ -25,6 +25,7 @@ const indexOf = ( array, value ) =>
  * @returns {[T[], T[], T[]]}
  */
 export const distinct = ( left, right ) => {
+	/** @type {T[]} */
 	const intersection = [],
 		complementRight = right.slice();
 

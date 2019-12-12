@@ -15,8 +15,10 @@ export const makePromise = () => {
 
 	return {
 		promise,
-		resolve,
-		reject
+		// Executor should be called during Promise
+		// construction thus they should be initialized
+		// @ts-ignore
+		resolve, reject
 	};
 };
 

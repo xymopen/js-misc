@@ -7,7 +7,10 @@
  * @returns {Promise<T>}
  */
 export const lazy = ( executor, sideEffect = true ) => {
-	let resolve, reject;
+	/** @type {PromiseResolver<T>} */
+	let resolve;
+	/** @type {PromiseRejecter} */
+	let reject;
 
 	/** @type {Promise<T>} */
 	const promise = new Promise( ( _resolve, _reject ) => {
@@ -51,6 +54,15 @@ export const lazy = ( executor, sideEffect = true ) => {
  * @see https://stackoverflow.com/questions/48158730/extend-javascript-promise-and-resolve-or-reject-it-inside-constructor
  * `lazy()` cannot be provided as a subclass to `Promise()`
  * because `executor()` must be called during Promise construction
+ */
+
+/**
+ * @template T
+ * @typedef {import("../utils/make-promise.js").PromiseResolver<T>} PromiseResolver
+ */
+
+/**
+ * @typedef {import("../utils/make-promise.js").PromiseRejecter} PromiseRejecter
  */
 
 /**

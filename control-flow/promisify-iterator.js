@@ -1,20 +1,28 @@
 import { makePromise } from "../utils/make-promise.js";
 
 /**
- * @template T
- * @template {NextResult<T>} F
+ * @template {Iterator<any>["next"]} F
  * @param {F} next
- * @param {PromiseResolver<T>} resolve
+// @ts-ignore
+ * @param {PromiseResolver<F extends Iterator<infer P>["next"] ? P : never>} resolve
  * @param {PromiseRejecter} reject
- * @returns {SameFunction<F>}
  */
 const makeNext = ( next, resolve, reject ) =>
+	/**
+	 * @param {Parameters<F>} args
+	 * @returns {ReturnType<F>}
+	 */
 	function ( ...args ) {
 		/** @type {ReturnType<F>} */
 		let result;
 
 		try {
-			result = next.apply( this, args );
+			result = /** @type {ReturnType<F>} */
+				( next.apply(
+					// @ts-ignore
+					this,
+					args
+				) );
 
 			if ( result.done ) {
 				resolve( result.value );
@@ -48,7 +56,7 @@ export const promisifyIterator = it => {
 	}
 
 	if ( typeof it.throw === "function" ) {
-		iterator.throw =makeNext( it.throw.bind( it ), resolve, reject );
+		iterator.throw = makeNext( it.throw.bind( it ), resolve, reject );
 	}
 
 	return {
@@ -70,13 +78,6 @@ export const promisifyIterator = it => {
  * @template T
 // @ts-ignore
  * @typedef {T extends Iterator<any, infer P> ? P : never} IteratorReturnType
- */
-
-/**
- * @template {Function} F
- * @callback SameFunction
- * @param {...Parameters<F>} args
- * @returns {ReturnType<F>}
  */
 
 /**

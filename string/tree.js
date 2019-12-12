@@ -9,6 +9,7 @@
  * @param {string} ps4 - prompt string for normal line of last entry
  * @param {string} is1 - indent string for normal entry
  * @param {string} is2 - indent string for last entry
+ * @returns {Generator<string, void>}
  */
 function* treeNode(
 	title, node, deepen,
@@ -33,7 +34,7 @@ function* treeNode(
 				if ( result.done ) {
 					yield* treeNode(
 						title,
-						child,
+						/** @type {T} */( child ),
 						deepen,
 						ps1, ps2,
 						ps3, ps4,
@@ -45,7 +46,7 @@ function* treeNode(
 				} else {
 					yield* treeNode(
 						title,
-						child,
+						/** @type {T} */( child ),
 						deepen,
 						ps1, ps2,
 						ps3, ps4,

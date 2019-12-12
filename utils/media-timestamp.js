@@ -38,7 +38,7 @@ export const stringify = time => {
 			}:${
 			times[ 1 ].toString().padStart( 2, "0" )
 			}:${
-			time[ 0 ] < 10 ? `0${ sec }` : sec
+			times[ 0 ] < 10 ? `0${ sec }` : sec
 			}`;
 	}
 };

@@ -2,9 +2,9 @@
 /// <reference lib="es2018.asynciterable" />
 
 /**
- * @template T, TR, TN
- * @param {Iterator<T, TR, TN>} iterator
- * @returns {Iterable<T, TR, TN>}
+ * @template T
+ * @param {Iterator<T>} iterator
+ * @returns {Iterable<T>}
  */
 export const iterate = iterator => ( {
 	[ Symbol.iterator ]() {
@@ -13,9 +13,9 @@ export const iterate = iterator => ( {
 } );
 
 /**
- * @template T, TR, TN
- * @param {AsyncIterator<T, TR, TN>} iterator
- * @returns {AsyncIterable<T, TR, TN>}
+ * @template T
+ * @param {AsyncIterator<T>} iterator
+ * @returns {AsyncIterable<T>}
  */
 export const asyncIterate = iterator => ( {
 	[ Symbol.asyncIterator ]() {

@@ -59,7 +59,8 @@ export const fromDeepEntries = ( iterable, merge = newValue => newValue ) => {
 	for ( const [ path, value ] of iterable ) {
 		if ( path.length > 0 ) {
 			/** @type {PropertyKey} */
-			let parentKey = undefined;
+			let parentKey;
+			/** @type {object | Array} */
 			let grandparent = null,
 				parent = root;
 			const lastKeyIdx = path.length - 1;
