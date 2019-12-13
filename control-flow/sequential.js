@@ -79,7 +79,7 @@ const sequential = maxConcurrency => {
  *
  * @template {ParamAsyncFunction} F
  * @param {F} asyncFn
- * @param {number} maxConcurrency
+ * @param {number} [maxConcurrency]
  * @returns {ReturnAsyncFunction<F>}
  */
 export const sequentialAsync = ( asyncFn, maxConcurrency = 1 ) => {
@@ -130,7 +130,7 @@ export const sequentialAsync = ( asyncFn, maxConcurrency = 1 ) => {
  *
  * @template {ParamCallbackFunction} F
  * @param {F} callbackFn
- * @param {number} maxConcurrency
+ * @param {number} [maxConcurrency]
  * @returns {ReturnCallbackFunction<F>}
  */
 export const sequentialCallback = ( callbackFn, maxConcurrency = 1 ) => {

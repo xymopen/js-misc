@@ -1,10 +1,10 @@
 /**
  * Linear congruential generator
  *
- * @param {number} x
- * @param {number} a - Multiplier
- * @param {number} c - Increment
- * @param {number} m - Modulus
+ * @param {number} [x]
+ * @param {number} [a] - Multiplier
+ * @param {number} [c] - Increment
+ * @param {number} [m] - Modulus
  * @yields {number} - Positive number less than modulus(m)
  * @see [Wikipedia](https://en.wikipedia.org/wiki/Linear_congruential_generator)
  * @see [C++ Reference](https://en.cppreference.com/w/cpp/numeric/random/linear_congruential_engine)

@@ -69,10 +69,10 @@ function* treeNode(
  * @param {string} title
  * @param {T} node
  * @param {Deepener<T>} deepen
- * @param {string} ps1 - prompt string for first line of normal entry
- * @param {string} ps2 - prompt string for normal line of normal entry
- * @param {string} ps3 - prompt string for first line of last entry
- * @param {string} ps4 - prompt string for normal line of last entry
+ * @param {string} [ps1] - prompt string for first line of normal entry
+ * @param {string} [ps2] - prompt string for normal line of normal entry
+ * @param {string} [ps3] - prompt string for first line of last entry
+ * @param {string} [ps4] - prompt string for normal line of last entry
  * @example
  * // Shell TREE(1)
  * for ( const line of tree( process.cwd(), process.cwd(), function* ( dirname ) {
