@@ -1,4 +1,34 @@
 /**
+ * `SortCompare()` abstract operation as defined in [Runtime Semantics: SortCompare ( x, y )](
+ * https://www.ecma-international.org/ecma-262/10.0/index.html#sec-sortcompare
+ * "ECMAScript® 2019 Language Specification")
+ *
+ * @param {any} x
+ * @param {any} y
+ * @returns {-1 | 0 | 1}
+ */
+const sortCompare = ( x, y ) => {
+	if ( x === undefined && y === undefined ) {
+		return +0;
+	} else if ( x === undefined ) {
+		return 1;
+	} else if ( y === undefined ) {
+		return -1;
+	} else {
+		const xString = String( x ),
+			yString = String( y );
+
+		if ( xString < yString ) {
+			return -1;
+		} else if ( yString < xString ) {
+			return 1;
+		} else {
+			return +0;
+		}
+	}
+};
+
+/**
  * Concat two ordered array
  *
  * @template T
@@ -12,7 +42,7 @@ const merge = ( left, right, compare ) => {
 	var result = [];
 
 	while ( left.length > 0 && right.length > 0 ) {
-		result.push( /** @type {T} */( ( compare( left[ 0 ], right[ 0 ] ) > 0 ? left : right ).shift() ) );
+		result.push( /** @type {T} */( ( compare( left[ 0 ], right[ 0 ] ) < 0 ? left : right ).shift() ) );
 	}
 
 	if ( left.length > 0 ) {
@@ -32,7 +62,7 @@ const merge = ( left, right, compare ) => {
  * @param {Comparator<T>} [compare]
  * @returns {T[]}
  */
-export const mergeSort = ( array, compare = ( a, b ) => a - b ) => {
+export const mergeSort = ( array, compare = sortCompare ) => {
 	if ( array.length === 1 ) {
 		return array;
 	} else {
