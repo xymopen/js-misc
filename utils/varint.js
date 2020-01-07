@@ -27,13 +27,12 @@ export function* encode( n ) {
 	}
 };
 
-/** @returns {Generator<void, number>} */
-export function* decode() {
+/** @param {Iterable<number>} input */
+export function decode( input ) {
 	let n = 0, i = 0;
 
-	while ( true ) {
-		const m = yield,
-			end = m >>> 7 === 1,
+	for ( const m of input ) {
+		const end = m >>> 7 === 1,
 			data = m & 0b01111111;
 
 		if ( !end ) {
@@ -53,4 +52,6 @@ export function* decode() {
 			throw new RangeError( "Cannot decode number greater than 4294967295" );
 		}
 	}
+
+	throw new RangeError( "Insufficient input" );
 };
