@@ -40,12 +40,15 @@ export const mergeSort = ( array, compare = ( a, b ) => a - b ) => {
 
 		for ( let i = 0, l = Math.log2( array.length ); i < l; i += 1 ) {
 			const next = [];
+			let i = 0;
 
-			for ( let i = 0; i < holder.length; i += 2 ) {
+			for ( let l = holder.length - 1; i < l; i += 2 ) {
 				next.push( merge( holder[ i ], holder[ i + 1 ], compare ) );
 			}
 
-			holder = next.concat( holder );
+			holder = i + 1 < holder.length ?
+				next.concat( holder.slice( i + 1 ) ) :
+				next;
 		}
 
 		return holder[ 0 ];
