@@ -32,26 +32,35 @@ const sortCompare = ( x, y ) => {
  * Concat two ordered array
  *
  * @template T
- * @param {T[]} left
- * @param {T[]} right
+ * @param {Iterable<T>} left
+ * @param {Iterable<T>} right
  * @param {Comparator<T>} compare
- * @returns {T[]}
+ * @returns {Generator<T>}
  */
-const merge = ( left, right, compare ) => {
-	/** @type {T[]} */
-	var result = [];
+function* merge( left, right, compare ) {
+	const leftIt = left[ Symbol.iterator ](),
+		rightIt = right[ Symbol.iterator ]();
 
-	while ( left.length > 0 && right.length > 0 ) {
-		result.push( /** @type {T} */( ( compare( left[ 0 ], right[ 0 ] ) < 0 ? left : right ).shift() ) );
+	let leftResult = leftIt.next(),
+		rightResult = rightIt.next();
+
+	while ( !leftResult.done && !rightResult.done ) {
+		if ( compare( leftResult.value, rightResult.value ) < 0 ) {
+			yield leftResult.value;
+			leftResult = leftIt.next();
+		} else {
+			yield rightResult.value;
+			rightResult = rightIt.next();
+		}
 	}
 
-	if ( left.length > 0 ) {
-		result = result.concat( left );
-	} else if ( right.length > 0 ) {
-		result = result.concat( right );
+	if ( !leftResult.done ) {
+		yield leftResult.value;
+		yield* { [ Symbol.iterator ]() { return leftIt; } };
+	} else if ( !rightResult.done ) {
+		yield rightResult.value;
+		yield* { [ Symbol.iterator ]() { return rightIt; } };
 	}
-
-	return result;
 };
 
 /**
@@ -73,7 +82,7 @@ export const mergeSort = ( array, compare = sortCompare ) => {
 			let i = 0;
 
 			for ( let l = holder.length - 1; i < l; i += 2 ) {
-				next.push( merge( holder[ i ], holder[ i + 1 ], compare ) );
+				next.push( Array.from( merge( holder[ i ], holder[ i + 1 ], compare ) ) );
 			}
 
 			holder = i + 1 < holder.length ?
