@@ -78,16 +78,23 @@ export const mergeSort = ( array, compare = sortCompare ) => {
 		let holder = array.map( e => [ e ] );
 
 		for ( let i = 0, l = Math.log2( array.length ); i < l; i += 1 ) {
-			const next = [];
-			let i = 0;
+			holder = Array.from( ( function* ( holder, compare ) {
+				/** @type {Iterable<T> | undefined} */
+				let prev = undefined;
 
-			for ( let l = holder.length - 1; i < l; i += 2 ) {
-				next.push( Array.from( merge( holder[ i ], holder[ i + 1 ], compare ) ) );
-			}
+				for ( const cur of holder ) {
+					if ( prev === undefined ) {
+						prev = cur;
+					} else {
+						yield merge( prev, cur, compare );
+						prev = undefined;
+					}
+				}
 
-			holder = i + 1 < holder.length ?
-				next.concat( holder.slice( i + 1 ) ) :
-				next;
+				if ( prev !== undefined ) {
+					yield prev;
+				}
+			} )( holder, compare ) ).map( it => Array.from( it ) );
 		}
 
 		return holder[ 0 ];
