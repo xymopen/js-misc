@@ -75,10 +75,15 @@ export const mergeSort = ( array, compare = sortCompare ) => {
 	if ( array.length === 1 ) {
 		return array;
 	} else {
-		let holder = array.map( e => [ e ] );
+		/** @type {Generator<Iterable<T>>} */
+		let holder = ( function* ( array ) {
+			for ( const i of array ) {
+				yield [ i ];
+			}
+		} )( array );
 
 		for ( let i = 0, l = Math.log2( array.length ); i < l; i += 1 ) {
-			holder = Array.from( ( function* ( holder, compare ) {
+			holder = ( function* ( holder, compare ) {
 				/** @type {Iterable<T> | undefined} */
 				let prev = undefined;
 
@@ -94,10 +99,10 @@ export const mergeSort = ( array, compare = sortCompare ) => {
 				if ( prev !== undefined ) {
 					yield prev;
 				}
-			} )( holder, compare ) ).map( it => Array.from( it ) );
+			} )( holder, compare );
 		}
 
-		return holder[ 0 ];
+		return Array.from( holder.next().value );
 	}
 };
 
