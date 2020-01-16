@@ -3,22 +3,27 @@
 
 /**
  * @template T
- * @param {Iterator<T>} iterator
+ * @param {Iterable<T>} iterable
  * @param {onCallback<T>} callback
  */
-export const forEachOf = ( iterator, callback ) => {
-	for ( let cur = iterator.next(); !cur.done; cur = iterator.next() ) {
+export const forEachOf = ( iterable, callback ) => {
+	for (
+		let iterator = iterable[ Symbol.iterator ](),
+			cur = iterator.next();
+		!cur.done;
+		cur = iterator.next()
+	) {
 		callback( cur.value );
 	}
 };
 
 /**
  * @template T
- * @param {AsyncIterator<T>} iterator
+ * @param {AsyncIterable<T>} iterable
  * @param {onCallback<T>} callback
  * @returns {Promise<void>}
  */
-export const forAwaitEachOf = ( iterator, callback ) =>
+export const forAwaitEachOf = ( iterable, callback ) =>
 	new Promise( ( resolve, reject ) => {
 		( function iterate( iterator ) {
 			iterator.next().then( cur => {
@@ -29,7 +34,7 @@ export const forAwaitEachOf = ( iterator, callback ) =>
 					iterate( iterator );
 				}
 			}, reject );
-		} )( iterator );
+		} )( iterable[ Symbol.asyncIterator ]() );
 	} );
 
 /**

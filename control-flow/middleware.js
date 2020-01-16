@@ -3,7 +3,7 @@
 /**
  * @template C, R
  * @param {C} context
- * @param {Iterator<Middleware<C, R>>} middles
+ * @param {Iterable<Middleware<C, R>>} middles
  * @param {Bottomware<C, R>} bottom
  */
 export const execute = ( context, middles, bottom ) => {
@@ -26,7 +26,7 @@ export const execute = ( context, middles, bottom ) => {
 		return fn;
 	};
 
-	return next( middles )( context );
+	return next( middles[ Symbol.iterator ]() )( context );
 };
 
 /**
@@ -42,7 +42,7 @@ export const app = bottom => {
 	const middlewares = [];
 	/** @param {C} context */
 	const exec = context =>
-		execute( context, middlewares[ Symbol.iterator ](), bottom );
+		execute( context, middlewares, bottom );
 
 	/** @param {Middleware<C, Promise<void>>} middleware */
 	exec.use = middleware => {

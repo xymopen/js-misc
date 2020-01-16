@@ -20,7 +20,7 @@ function* treeNode(
 	yield `${ is1 }${ title }`;
 
 	if ( node !== undefined ) {
-		const children = deepen( node );
+		const children = deepen( node )[ Symbol.iterator ]();
 		const result = children.next();
 
 		if ( !result.done ) {
@@ -109,5 +109,5 @@ export function* tree(
  * @template T
  * @callback Deepener
  * @param {T} context
- * @returns {Iterator<[string] | [string, T], void>}
+ * @returns {Iterable<[string] | [string, T]>}
  */
