@@ -32,35 +32,26 @@ const sortCompare = ( x, y ) => {
  * Concat two ordered array
  *
  * @template T
- * @param {Iterable<T>} left
- * @param {Iterable<T>} right
+ * @param {T[]} left
+ * @param {T[]} right
  * @param {Comparator<T>} compare
- * @returns {Generator<T>}
+ * @returns {T[]}
  */
-function* merge( left, right, compare ) {
-	const leftIt = left[ Symbol.iterator ](),
-		rightIt = right[ Symbol.iterator ]();
+const merge = ( left, right, compare ) => {
+	/** @type {T[]} */
+	var result = [];
 
-	let leftResult = leftIt.next(),
-		rightResult = rightIt.next();
-
-	while ( !leftResult.done && !rightResult.done ) {
-		if ( compare( leftResult.value, rightResult.value ) < 0 ) {
-			yield leftResult.value;
-			leftResult = leftIt.next();
-		} else {
-			yield rightResult.value;
-			rightResult = rightIt.next();
-		}
+	while ( left.length > 0 && right.length > 0 ) {
+		result.push( /** @type {T} */( ( compare( left[ 0 ], right[ 0 ] ) < 0 ? left : right ).shift() ) );
 	}
 
-	if ( !leftResult.done ) {
-		yield leftResult.value;
-		yield* { [ Symbol.iterator ]() { return leftIt; } };
-	} else if ( !rightResult.done ) {
-		yield rightResult.value;
-		yield* { [ Symbol.iterator ]() { return rightIt; } };
+	if ( left.length > 0 ) {
+		result = result.concat( left );
+	} else if ( right.length > 0 ) {
+		result = result.concat( right );
 	}
+
+	return result;
 };
 
 /**
@@ -75,34 +66,22 @@ export const mergeSort = ( array, compare = sortCompare ) => {
 	if ( array.length === 1 ) {
 		return array;
 	} else {
-		/** @type {Generator<Iterable<T>>} */
-		let holder = ( function* ( array ) {
-			for ( const i of array ) {
-				yield [ i ];
-			}
-		} )( array );
+		let holder = array.map( e => [ e ] );
 
 		for ( let i = 0, l = Math.log2( array.length ); i < l; i += 1 ) {
-			holder = ( function* ( holder, compare ) {
-				/** @type {Iterable<T> | undefined} */
-				let prev = undefined;
+			const next = [];
+			let i = 0;
 
-				for ( const cur of holder ) {
-					if ( prev === undefined ) {
-						prev = cur;
-					} else {
-						yield merge( prev, cur, compare );
-						prev = undefined;
-					}
-				}
+			for ( let l = holder.length - 1; i < l; i += 2 ) {
+				next.push( merge( holder[ i ], holder[ i + 1 ], compare ) );
+			}
 
-				if ( prev !== undefined ) {
-					yield prev;
-				}
-			} )( holder, compare );
+			holder = i + 1 < holder.length ?
+				next.concat( holder.slice( i + 1 ) ) :
+				next;
 		}
 
-		return Array.from( holder.next().value );
+		return holder[ 0 ];
 	}
 };
 
