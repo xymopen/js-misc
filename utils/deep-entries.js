@@ -22,9 +22,9 @@ const isObject = value =>
 /**
  * @param {any} newValue
  * @param {PropertyKey} key
- * @param {object | Array} parent
+ * @param {object | any[]} parent
  * @param {PropertyKey[]} path
- * @param {object | Array} root
+ * @param {object | any[]} root
  * @param {Merger} merge
  * @param {ResetParent} resetParent
  */
@@ -53,14 +53,14 @@ const setNewValue = ( newValue, key, parent, path, root, merge, resetParent ) =>
  * @param {Merger} [merge]
  */
 export const fromDeepEntries = ( iterable, merge = newValue => newValue ) => {
-	/** @type {object | Array} */
+	/** @type {object | any[]} */
 	let root = {};
 
 	for ( const [ path, value ] of iterable ) {
 		if ( path.length > 0 ) {
 			/** @type {PropertyKey} */
 			let parentKey;
-			/** @type {object | Array} */
+			/** @type {object | any[]} */
 			let grandparent = null,
 				parent = root;
 			const lastKeyIdx = path.length - 1;
@@ -156,8 +156,8 @@ export const deepEntries = ( object ) => {
  * @param {any} newValue
  * @param {any} oldValue
  * @param {PropertyKey} key
- * @param {object | Array} parent
+ * @param {object | any[]} parent
  * @param {PropertyKey[]} path
- * @param {object | Array} root
+ * @param {object | any[]} root
  * @returns {any}
  */
