@@ -5,7 +5,7 @@
  * `0` is used if an index is missing in the `indices`
  *
  * For example, to address a value in an `ImageData`,
- * evaluate `( y * width + x ) * 3 + c`.
+ * evaluate `( y * width + x ) * 4 + c`.
  *
  * @param {number[]} indices - Row major ordered array indices
  * @param {number[]} shape - Row major ordered array shape
