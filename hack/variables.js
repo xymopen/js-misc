@@ -15,11 +15,11 @@ export const variables = () => {
 	const emptyWindow = /** @type {Window} */ ( frame.contentWindow );
 
 	Reflect.ownKeys( window )
-		.filter( name => !emptyWindow.hasOwnProperty( name ) )
+		.filter( name => !Object.prototype.hasOwnProperty.call( emptyWindow, name ) )
 		.reduce( ( map, name ) => {
 			// @ts-ignore
 			map[ name ] = window[ name ];
-			
+
 			return map;
 		}, vars );
 
