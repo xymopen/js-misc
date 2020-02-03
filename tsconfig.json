@@ -7,5 +7,8 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": false,
     "noEmit": true
-  }
+  },
+  "include": [
+    "**/*.js",
+  ]
 }
