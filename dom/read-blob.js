@@ -4,7 +4,7 @@
  * @param {Blob} blob
  * @param {KeyOfType<FileReader, (blob: Blob) => void>} method
  */
-const read = ( blob, method ) => new Promise( ( resolve, reject ) => {
+const readAs = ( blob, method ) => new Promise( ( resolve, reject ) => {
 	const reader = new FileReader();
 
 	reader.addEventListener( "load", () => resolve( reader.result ) );
@@ -17,31 +17,27 @@ const read = ( blob, method ) => new Promise( ( resolve, reject ) => {
  *
  * @param {Blob} blob
  */
-export const readBlob = blob => {
-	const returns = {};
+export const readBlob = blob => ( {
+	/** @returns {Promise<ArrayBuffer>} */
+	arrayBuffer() {
+		return readAs( blob, "readAsArrayBuffer" );
+	},
 
-	if ( typeof FileReader.prototype.readAsArrayBuffer === "function" ) {
-		/** @returns {Promise<ArrayBuffer>} */
-		returns.arrayBuffer = () => read( blob, "readAsArrayBuffer" );
+	/** @returns {Promise<string>} */
+	binaryString() {
+		return readAs( blob, "readAsBinaryString" );
+	},
+
+	/** @returns {Promise<string>} */
+	dataURL() {
+		return readAs( blob, "readAsDataURL" );
+	},
+
+	/** @returns {Promise<string>} */
+	text() {
+		return readAs( blob, "readAsText" );
 	}
-
-	if ( typeof FileReader.prototype.readAsBinaryString === "function" ) {
-		/** @returns {Promise<ArrayBuffer>} */
-		returns.binaryString = () => read( blob, "readAsBinaryString" );
-	}
-
-	if ( typeof FileReader.prototype.readAsDataURL === "function" ) {
-		/** @returns {Promise<ArrayBuffer>} */
-		returns.dataURL = () => read( blob, "readAsDataURL" );
-	}
-
-	if ( typeof FileReader.prototype.readAsText === "function" ) {
-		/** @returns {Promise<ArrayBuffer>} */
-		returns.text = () => read( blob, "readAsText" );
-	}
-
-	return returns;
-};
+} );
 
 /**
  * @template T, U
