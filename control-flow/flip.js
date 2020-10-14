@@ -38,7 +38,7 @@ export const unthis = fn => {
 };
 
 /**
- * @template T
+ * @template {any[]} T
  * @typedef {T extends [ any, ...infer P ] ? P : never} Tail
  */
 
