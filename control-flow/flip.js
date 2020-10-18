@@ -27,7 +27,7 @@ export const flip = fn => {
  *
  * Accept `this` on the first argument
  *
- * @param {*} fn
+ * @param {fn} fn
  */
 export const unthis = fn => {
 	if ( typeof fn !== "function" ) {
